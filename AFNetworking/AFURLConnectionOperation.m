@@ -40,8 +40,8 @@ typedef UIBackgroundTaskIdentifier AFBackgroundTaskIdentifier;
 typedef id AFBackgroundTaskIdentifier;
 #endif
 
-static NSUInteger const kAFHTTPMinimumInitialDataCapacity = 1024;
-static NSUInteger const kAFHTTPMaximumInitialDataCapacity = 1024 * 1024 * 8;
+//static NSUInteger const kAFHTTPMinimumInitialDataCapacity = 1024;
+//static NSUInteger const kAFHTTPMaximumInitialDataCapacity = 1024 * 1024 * 8;
 
 static NSString * const kAFNetworkingLockName = @"com.alamofire.networking.operation.lock";
 

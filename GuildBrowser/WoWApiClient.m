@@ -3,7 +3,14 @@
 #import "Character.h"
 #import "Guild.h"
 
+
+#define kAPIKey = @"4dabm2d4336x9k3h6hppsyxhm3ghcxsd";
+
+
 @implementation WoWApiClient
+
+
+
 
 static dispatch_once_t oncePredicate;
 
@@ -13,7 +20,7 @@ static dispatch_once_t oncePredicate;
     // per Apple doing this once via GCD protects against race conditions
     dispatch_once(&oncePredicate, ^{
         // initialize self with the baseURL for us region
-        _sharedClient = [[self alloc] initWithBaseURL:[NSURL URLWithString:@"http://us.battle.net"]];
+        _sharedClient = [[self alloc] initWithBaseURL:[NSURL URLWithString:@"https://eu.api.battle.net"]];        //[NSURL URLWithString:@"http://us.battle.net"]];   //https://us.api.battle.net/wow/realm/status?apikey=<key>
     });
     
     return _sharedClient;
@@ -34,24 +41,18 @@ static dispatch_once_t oncePredicate;
 	return self;
 }
 
--(void)guildWithName:(NSString *)guildName
-             onRealm:(NSString *)realmName
-             success:(GuildBlock)successBlock
-               error:(ErrorBlock)errorBlock
-{
+-(void)guildWithName:(NSString *)guildName onRealm:(NSString *)realmName success:(GuildBlock)successBlock error:(ErrorBlock)errorBlock {
     
-    NSString *url = [NSString stringWithFormat:@"/api/wow/guild/%@/%@",realmName,guildName];
+    NSString *url = [NSString stringWithFormat:@"/wow/guild/%@/%@",realmName,guildName];
     
-    [self getPath: [url stringByAddingPercentEscapesUsingEncoding: NSUTF8StringEncoding]
-     parameters:@{ @"fields" : @"members" }
-     success:^(AFHTTPRequestOperation *operation, id responseObject) {
+    [self getPath:[url stringByAddingPercentEscapesUsingEncoding: NSUTF8StringEncoding] parameters:@{ @"apikey" : @"4dabm2d4336x9k3h6hppsyxhm3ghcxsd", @"fields" : @"members" } success:^(AFHTTPRequestOperation *operation, id responseObject) {
          
          Guild *guild = [[Guild alloc] initWithGuildData:responseObject];
          successBlock(guild);
          
      } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
          
-         NSLog(@"Error getting character detail: %@",[error localizedDescription]);
+         NSLog(@"guildWithName: - Error getting character detail: %@",[error localizedDescription]);
          errorBlock(error);
          
      }];
@@ -61,24 +62,18 @@ static dispatch_once_t oncePredicate;
 // /api/wow/character/borean-tundra/
 // Hagrel
 // fields=guild,items,professions,reputation,stats
--(void)characterWithName:(NSString *)characterName
-                 onRealm:(NSString *)realmName
-                 success:(CharacterBlock)successBlock
-                   error:(ErrorBlock)errorBlock
-{
+-(void)characterWithName:(NSString *)characterName onRealm:(NSString *)realmName success:(CharacterBlock)successBlock error:(ErrorBlock)errorBlock {
     
     // get url and then encode it
-    NSString *url = [NSString stringWithFormat:@"/api/wow/character/%@/%@",realmName,characterName];
+    NSString *url = [NSString stringWithFormat:@"/wow/character/%@/%@",realmName,characterName];
     
-    [self getPath: [url stringByAddingPercentEscapesUsingEncoding: NSUTF8StringEncoding]
-     parameters:@{ @"fields" : @"guild,items,stats,talents,titles" }
-     success:^(AFHTTPRequestOperation *operation, id responseObject) {
+    [self getPath:[url stringByAddingPercentEscapesUsingEncoding: NSUTF8StringEncoding] parameters:@{ @"apikey" : @"4dabm2d4336x9k3h6hppsyxhm3ghcxsd", @"fields" : @"guild,items,stats,talents,titles" } success:^(AFHTTPRequestOperation *operation, id responseObject) {
          
          Character *detailChar = [[Character alloc] initWithCharacterDetailData:responseObject];
          successBlock(detailChar);
          
      } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-         NSLog(@"Error getting character detail: %@",[error localizedDescription]);
+         NSLog(@"characterWithName: - Error getting character detail: %@",[error localizedDescription]);
          errorBlock(error);
      }];
 }

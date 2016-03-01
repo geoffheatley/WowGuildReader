@@ -25,11 +25,15 @@
 -(id)initWithCoder:(NSCoder *)aDecoder
 {
     self = [super initWithCoder:aDecoder];
+    
     if (self) {
+        
         // store these later in NSUserDefaults
-        _guildName = @"Dream Catchers";
-        _realmName = @"Borean Tundra";
+        _guildName = @"Serenity";
+        _realmName = @"Twisting Nether";
+        
     }
+    
     return self;
 }
 

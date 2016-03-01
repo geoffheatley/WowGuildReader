@@ -8,7 +8,7 @@
     return [self initWithName:itemData[@"name"]
                        itemId:itemData[@"id"]
                          icon:itemData[@"icon"]
-                      quality:[itemData[@"quality"] integerValue]];
+                      quality:(ItemQuality)[itemData[@"quality"] integerValue]];
 }
 
 +(id)initWithName:(NSString *)name
